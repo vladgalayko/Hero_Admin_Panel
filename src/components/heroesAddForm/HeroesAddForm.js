@@ -2,7 +2,7 @@ import {useHttp} from '../../hooks/http.hook';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { addHero } from '../../actions';
+import { heroCreated } from '../heroesList/heroesSlice';
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -20,7 +20,7 @@ const HeroesAddForm = () => {
     const [heroDescr, setHeroDescr] = useState('');
     const [heroElement, setHeroElement] = useState('');
 
-    const {filters, filtersLoadingStatus} = useSelector(state => state.filtersReducer);
+    const {filters, filtersLoadingStatus} = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -39,7 +39,7 @@ const HeroesAddForm = () => {
         // Додавання в JSON
         request("http://localhost:3001/heroes", 'POST', JSON.stringify(newHero))
             .then(res => console.log(res, 'Отправка успешна'))
-            .then(dispatch(addHero(newHero)))
+            .then(dispatch(heroCreated(newHero)))
             .catch(err => console.log(err));
 
             setHeroName('');
